@@ -3,7 +3,10 @@ import { useEffect, useState } from 'react'
 import {
   collection,
   addDoc,
-  getDocs
+  getDocs,
+  deleteDoc,
+  doc,
+  updateDoc
 } from 'firebase/firestore'
 
 import { db } from '../services/firebase'
@@ -17,31 +20,23 @@ function Admin() {
   const [imagemUrl, setImagemUrl] = useState('')
 
   const [produtos, setProdutos] = useState([])
+  const [editandoId, setEditandoId] = useState(null)
 
   async function carregarProdutos() {
 
-    try {
-
-      const snapshot = await getDocs(
-        collection(
-          db,
-          'produtos'
-        )
+    const snapshot = await getDocs(
+      collection(
+        db,
+        'produtos'
       )
+    )
 
-      const lista = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }))
+    const lista = snapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }))
 
-      setProdutos(lista)
-
-    } catch (error) {
-
-      console.log(error)
-
-    }
-
+    setProdutos(lista)
   }
 
   useEffect(() => {
@@ -49,6 +44,17 @@ function Admin() {
     carregarProdutos()
 
   }, [])
+
+  function editarProduto(produto) {
+
+    setNome(produto.nome)
+    setCategoria(produto.categoria)
+    setDescricao(produto.descricao)
+    setPreco(produto.preco)
+    setImagemUrl(produto.imagemUrl)
+
+    setEditandoId(produto.id)
+  }
 
   async function adicionarProduto() {
 
@@ -62,28 +68,52 @@ function Admin() {
         !imagemUrl
       ) {
 
-        alert(
-          'Preencha todos os campos.'
-        )
+        alert('Preencha todos os campos.')
 
         return
-
       }
 
-      await addDoc(
-        collection(
-          db,
-          'produtos'
-        ),
-        {
-          nome,
-          categoria,
-          descricao,
-          preco: Number(preco),
-          imagemUrl,
-          destaque: false
-        }
-      )
+      if (editandoId) {
+
+        await updateDoc(
+          doc(
+            db,
+            'produtos',
+            editandoId
+          ),
+          {
+            nome,
+            categoria,
+            descricao,
+            preco: Number(preco),
+            imagemUrl
+          }
+        )
+
+        alert('Produto atualizado!')
+
+        setEditandoId(null)
+
+      } else {
+
+        await addDoc(
+          collection(
+            db,
+            'produtos'
+          ),
+          {
+            nome,
+            categoria,
+            descricao,
+            preco: Number(preco),
+            imagemUrl,
+            destaque: false
+          }
+        )
+
+        alert('Produto salvo com sucesso!')
+
+      }
 
       setNome('')
       setCategoria('')
@@ -91,17 +121,38 @@ function Admin() {
       setPreco('')
       setImagemUrl('')
 
-            alert(
-        'Produto salvo com sucesso!'
+      await carregarProdutos()
+
+    } catch (error) {
+
+      console.log(error)
+
+      alert(error.message)
+
+    }
+
+  }
+
+  async function excluirProduto(id) {
+
+    const confirmar =
+      window.confirm(
+        'Deseja excluir este produto?'
+      )
+
+    if (!confirmar) return
+
+    try {
+
+      await deleteDoc(
+        doc(
+          db,
+          'produtos',
+          id
         )
+      )
 
-        setNome('')
-        setCategoria('')
-        setDescricao('')
-        setPreco('')
-        setImagemUrl('')
-
-        carregarProdutos()
+      await carregarProdutos()
 
     } catch (error) {
 
@@ -117,105 +168,128 @@ function Admin() {
 
     <div className="container">
 
-      <div className="card">
+      <div className="admin-card">
 
-        <h2>Produtos</h2>
+        <h1 className="admin-title">
+          Painel Administrativo
+        </h1>
 
-        <input
-          type="text"
-          placeholder="Nome"
-          value={nome}
-          onChange={(e) =>
-            setNome(e.target.value)
-          }
-        />
+        <div className="admin-form">
 
-        <input
-          type="text"
-          placeholder="Categoria"
-          value={categoria}
-          onChange={(e) =>
-            setCategoria(
-              e.target.value
-            )
-          }
-        />
+          <input
+            type="text"
+            placeholder="Nome"
+            value={nome}
+            onChange={(e) =>
+              setNome(e.target.value)
+            }
+          />
 
-        <input
-          type="text"
-          placeholder="Descrição"
-          value={descricao}
-          onChange={(e) =>
-            setDescricao(
-              e.target.value
-            )
-          }
-        />
+          <input
+            type="text"
+            placeholder="Categoria"
+            value={categoria}
+            onChange={(e) =>
+              setCategoria(e.target.value)
+            }
+          />
 
-        <input
-          type="number"
-          placeholder="Preço"
-          value={preco}
-          onChange={(e) =>
-            setPreco(
-              e.target.value
-            )
-          }
-        />
+          <input
+            type="text"
+            placeholder="Descrição"
+            value={descricao}
+            onChange={(e) =>
+              setDescricao(e.target.value)
+            }
+          />
 
-        <input
-          type="text"
-          placeholder="URL da Imagem"
-          value={imagemUrl}
-          onChange={(e) =>
-            setImagemUrl(
-              e.target.value
-            )
-          }
-        />
+          <input
+            type="number"
+            placeholder="Preço"
+            value={preco}
+            onChange={(e) =>
+              setPreco(e.target.value)
+            }
+          />
 
-        <button
-          onClick={adicionarProduto}
-        >
-          Salvar Produto
-        </button>
+          <input
+            type="text"
+            placeholder="URL da Imagem"
+            value={imagemUrl}
+            onChange={(e) =>
+              setImagemUrl(e.target.value)
+            }
+          />
 
-        <hr />
+          <button
+            className="login-btn"
+            onClick={adicionarProduto}
+          >
+            {editandoId
+              ? 'Atualizar Produto'
+              : 'Salvar Produto'}
+          </button>
 
-        <h2>
-          Produtos Cadastrados
-        </h2>
+        </div>
+
+      </div>
+
+      <div className="admin-produtos">
 
         {produtos.map(produto => (
 
           <div
             key={produto.id}
-            style={{
-              marginBottom: '20px'
-            }}
+            className="admin-produto-card"
           >
 
-            <h3>
-              {produto.nome}
-            </h3>
+            {produto.imagemUrl && (
+              <img
+                src={produto.imagemUrl}
+                alt={produto.nome}
+                className="admin-produto-imagem"
+              />
+            )}
 
-            <p>
-              📂 {produto.categoria}
-            </p>
+            <div className="admin-produto-info">
 
-            <p>
-              📝 {produto.descricao}
-            </p>
+              <h3>
+                {produto.nome}
+              </h3>
 
-            <p>
-              💰 R$ {produto.preco}
-            </p>
+              <p>
+                📂 {produto.categoria}
+              </p>
 
-            <p>
-              🔗 {produto.imagemUrl}
-            </p>
+              <p>
+                📝 {produto.descricao}
+              </p>
 
-            <hr />
+              <p className="preco">
+                💰 R$ {Number(produto.preco).toFixed(2)}
+              </p>
+                
+        <div className="admin-botoes">
+
+              <button
+                className="btn-editar"
+                onClick={() =>
+                  editarProduto(produto)
+                }
+              >
+                ✏️ Editar
+              </button>
+
+              <button
+                className="btn-excluir"
+                onClick={() =>
+                  excluirProduto(produto.id)
+                }
+              >
+                🗑 Excluir
+              </button>
+                </div>
+            </div>
 
           </div>
 

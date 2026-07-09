@@ -5,82 +5,390 @@
 }
 
 body {
-  background: #fff4f8;
-
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-}
-
-h1 {
-  color: #6b3d2e;
-
-  text-align: center;
-
-  margin-top: 50px;
-}
-
-p {
-  text-align: center;
-
-  margin-top: 10px;
+  background: #f8f3f5;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #4d3126;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 1450px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
 
-  margin: 40px auto;
+/* LOGIN */
 
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 450px;
+  background: white;
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, .08);
+  text-align: center;
+}
+
+.login-logo {
+  width: 140px;
+  margin-bottom: 20px;
+}
+
+.login-card h1 {
+  color: #6b3d2e;
+  margin-bottom: 10px;
+}
+
+.login-card h2 {
+  color: #e78798;
+  margin-bottom: 10px;
+}
+
+.login-subtitle {
+  color: #777;
+  margin-bottom: 25px;
+}
+
+.login-card input {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 14px;
+  border: 1px solid #e6d7dd;
+  border-radius: 12px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #e78798;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.login-btn:hover {
+  background: #d97587;
+}
+
+/* ================= ADMIN ================= */
+
+.admin-card {
+  background: white;
+  border-radius: 24px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.08);
+}
+
+.admin-title {
+  text-align: center;
+  color: #6b3d2e;
+  margin-bottom: 25px;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-form input {
+  padding: 14px;
+  border: 1px solid #e6d7dd;
+  border-radius: 12px;
+}
+
+.admin-produtos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  justify-items: center;
+}
+
+.admin-produto-card {
+  width: 100%;
+  max-width: 300px;
+  height: 500px;
+
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: 0 4px 15px rgba(0,0,0,.08);
+  transition: .2s ease;
+}
+
+.admin-produto-card:hover {
+  transform: translateY(-5px);
+}
+
+.admin-produto-imagem,
+.produto-imagem {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+}
+
+.admin-produto-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  text-align: center;
+}
+
+.admin-produto-info h3 {
+  color: #6b3d2e;
+  font-size: 22px;
+  min-height: 56px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin-produto-info p {
+  font-size: 15px;
+  margin-top: 8px;
+}
+
+.preco {
+  margin-top: auto;
+  color: #ff5f99;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.admin-botoes {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.btn-editar,
+.btn-excluir {
+  width: 110px;
+  height: 42px;
+
+  border: none;
+  border-radius: 12px;
+
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.btn-editar {
+  background: #e78798;
+}
+
+.btn-editar:hover {
+  background: #d97587;
+}
+
+.btn-excluir {
+  background: #dc3545;
+}
+
+.btn-excluir:hover {
+  background: #c82333;
+}
+
+/* ================= HOME ================= */
+
+.hero {
+  background: white;
+  border-radius: 24px;
+  padding: 50px 20px;
+  margin-bottom: 40px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,.08);
+}
+
+.hero img {
+  width: 180px;
+  max-width: 100%;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-size: 48px;
+  color: #6b3d2e;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  color: #7b5a4e;
+  font-size: 18px;
+}
+
+.hero .slogan {
+  margin-top: 15px;
+  color: #a36d59;
+  font-style: italic;
+}
+
+.produtos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  justify-items: center;
+}
+
+.produto-card {
+  width: 100%;
+  max-width: 300px;
+
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+
+  box-shadow: 0 4px 15px rgba(0,0,0,.08);
+  transition: .2s;
+}
+
+.produto-card:hover {
+  transform: translateY(-5px);
+}
+
+.produto-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.produto-info {
   padding: 20px;
 }
 
-.card {
-  max-width: 500px;
-
-  margin: 0 auto;
-
-  background: white;
-
-  padding: 30px;
-
-  border-radius: 16px;
-
-  box-shadow:
-    0 4px 20px
-    rgba(0,0,0,.1);
+.produto-info h3 {
+  color: #6b3d2e;
+  margin-bottom: 10px;
+  font-size: 24px;
 }
 
-input {
-  width: 100%;
-
-  padding: 12px;
-
-  margin-bottom: 12px;
-
-  border-radius: 10px;
-
-  border: 1px solid #ddd;
+.produto-info p {
+  margin-bottom: 10px;
+  line-height: 1.5;
 }
 
-button {
+.btn-whatsapp {
   width: 100%;
-
-  padding: 12px;
-
   border: none;
-
-  border-radius: 10px;
-
-  background: #ff7eb6;
-
+  border-radius: 12px;
+  padding: 12px;
+  background: #25d366;
   color: white;
-
+  font-size: 15px;
   font-weight: bold;
-
   cursor: pointer;
+  transition: .2s;
 }
 
-button:hover {
-  opacity: .9;
+.btn-whatsapp:hover {
+  background: #1fb457;
+}
+
+/* FOOTER */
+
+.footer {
+  margin-top: 60px;
+  text-align: center;
+  color: #777;
+}
+
+/* ================= RESPONSIVO ================= */
+
+@media (max-width: 1300px) {
+
+  .container {
+    max-width: 1100px;
+  }
+
+  .produtos-grid,
+  .admin-produtos {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+}
+
+@media (max-width: 992px) {
+
+  .hero h1 {
+    font-size: 38px;
+  }
+
+  .produtos-grid,
+  .admin-produtos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .container {
+    padding: 20px 15px;
+  }
+
+  .hero {
+    padding: 35px 20px;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .admin-produto-card,
+  .produto-card {
+    max-width: 350px;
+  }
+
+}
+
+@media (max-width: 576px) {
+
+  .produtos-grid,
+  .admin-produtos {
+    grid-template-columns: 1fr;
+  }
+
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .hero img {
+    width: 140px;
+  }
+
+  .admin-botoes {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-editar,
+  .btn-excluir {
+    width: 90%;
+  }
+
 }

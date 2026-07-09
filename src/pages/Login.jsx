@@ -12,6 +12,8 @@ import {
   auth
 } from '../services/firebase'
 
+import logo from '../assets/Logo.jpg'
+
 function Login() {
 
   const [email, setEmail] =
@@ -37,10 +39,8 @@ function Login() {
 
     } catch (error) {
 
-      console.log(error)
-
       alert(
-        error.message
+        'Email ou senha inválidos.'
       )
 
     }
@@ -49,11 +49,27 @@ function Login() {
 
   return (
 
-    <div className="container">
+    <div className="login-page">
 
-      <div className="card">
+      <div className="login-card">
 
-        <h2>Login</h2>
+      <img
+        src={logo}
+        alt="Leidy Doces"
+        className="login-logo"
+      />
+      
+        <h1>
+          Leidy Doces
+        </h1>
+
+        <h2>
+          Área Administrativa
+        </h2>
+
+        <p className="login-subtitle">
+          Gerencie produtos, preços e categorias.
+        </p>
 
         <input
           type="email"
@@ -78,6 +94,7 @@ function Login() {
         />
 
         <button
+          className="login-btn"
           onClick={fazerLogin}
         >
           Entrar
@@ -88,6 +105,7 @@ function Login() {
     </div>
 
   )
+
 }
 
 export default Login
