@@ -7,7 +7,7 @@ import {
 
 import { db } from '../services/firebase'
 
-import logo from '../assets/Logo.jpg'
+import banner from '../assets/banner.png'
 
 function Home() {
 
@@ -38,26 +38,16 @@ function Home() {
     <div className="container">
 
       <div className="hero">
-
         <img
-          src={logo}
+          src={banner}
           alt="Leidy Doces"
-          className="logo"
+          className="hero-banner"
         />
-
-        <h1>Leidy Doces</h1>
-
-        <p>Doces • Trufas • Bolos</p>
-
-        <p className="slogan">
-          Doces artesanais preparados com carinho
-          para tornar seus momentos ainda mais especiais ✨
-        </p>
-
+        
       </div>
 
       <div className="produtos-grid">
-
+        
         {produtos.map((produto) => (
 
           <div
@@ -80,11 +70,16 @@ function Home() {
               <p>{produto.descricao}</p>
 
               <p className="preco">
-                R$ {Number(produto.preco).toFixed(2)}
+                 {Number(produto.preco).toLocaleString(
+                  "pt-BR",{
+                    style: "currency",
+                    currency: "BRL"
+                  }
+                )}
               </p>
 
               <a
-                href={`https://wa.me/5534999789679?text=${encodeURIComponent(
+                href={`https://wa.me/5534992995857?text=${encodeURIComponent(
                   `Olá! Tenho interesse no produto ${produto.nome}.`
                 )}`}
                 target="_blank"

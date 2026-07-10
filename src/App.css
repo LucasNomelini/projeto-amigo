@@ -5,15 +5,21 @@
 }
 
 body {
-  background: #f8f3f5;
+  background: linear-gradient(
+    to top,
+    #f7dbe4 0%,
+    #f8f3f5 35%,
+    #f8f3f5 100%
+  );
+
   font-family: Arial, Helvetica, sans-serif;
-  color: #4d3126;
+  color: #753519;
 }
 
 .container {
   max-width: 1450px;
   margin: 0 auto;
-  padding: 30px 20px;
+  padding: 0;
 }
 
 /* LOGIN */
@@ -82,6 +88,32 @@ body {
 
 /* ================= ADMIN ================= */
 
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.btn-sair {
+  background: #dc3545;
+  color: white;
+
+  border: none;
+  border-radius: 12px;
+
+  padding: 12px 20px;
+
+  font-weight: bold;
+  cursor: pointer;
+
+  transition: .2s;
+}
+
+.btn-sair:hover {
+  background: #c82333;
+}
+
 .admin-card {
   background: white;
   border-radius: 24px;
@@ -94,6 +126,7 @@ body {
   text-align: center;
   color: #6b3d2e;
   margin-bottom: 25px;
+  width: 100%;
 }
 
 .admin-form {
@@ -119,14 +152,11 @@ body {
   width: 100%;
   max-width: 300px;
   height: 500px;
-
   background: #fff;
   border-radius: 20px;
   overflow: hidden;
-
   display: flex;
   flex-direction: column;
-
   box-shadow: 0 4px 15px rgba(0,0,0,.08);
   transition: .2s ease;
 }
@@ -155,7 +185,6 @@ body {
   color: #6b3d2e;
   font-size: 22px;
   min-height: 56px;
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -184,10 +213,8 @@ body {
 .btn-excluir {
   width: 110px;
   height: 42px;
-
   border: none;
   border-radius: 12px;
-
   color: white;
   font-weight: bold;
   cursor: pointer;
@@ -213,52 +240,39 @@ body {
 /* ================= HOME ================= */
 
 .hero {
-  background: white;
+  display: flex;
+  justify-content: center;
+  margin-top: -80px;
+  margin-bottom: 30px;
+}
+
+.hero-banner {
+  width: 95%;
+  height: auto;
+  display: block;
   border-radius: 24px;
-  padding: 50px 20px;
-  margin-bottom: 40px;
-  text-align: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,.08);
-}
-
-.hero img {
-  width: 180px;
-  max-width: 100%;
-  margin-bottom: 20px;
-}
-
-.hero h1 {
-  font-size: 48px;
-  color: #6b3d2e;
-  margin-bottom: 10px;
-}
-
-.hero p {
-  color: #7b5a4e;
-  font-size: 18px;
-}
-
-.hero .slogan {
-  margin-top: 15px;
-  color: #a36d59;
-  font-style: italic;
 }
 
 .produtos-grid {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 0 auto;
+  margin-top: -80px;
+
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 25px;
+
   justify-items: center;
 }
 
 .produto-card {
   width: 100%;
   max-width: 300px;
-
   background: white;
   border-radius: 20px;
   overflow: hidden;
-
   box-shadow: 0 4px 15px rgba(0,0,0,.08);
   transition: .2s;
 }
@@ -275,6 +289,10 @@ body {
 
 .produto-info {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .produto-info h3 {
@@ -286,6 +304,13 @@ body {
 .produto-info p {
   margin-bottom: 10px;
   line-height: 1.5;
+}
+
+.produto-info .preco {
+  color: #ff5f99;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
 .btn-whatsapp {
@@ -330,10 +355,6 @@ body {
 
 @media (max-width: 992px) {
 
-  .hero h1 {
-    font-size: 38px;
-  }
-
   .produtos-grid,
   .admin-produtos {
     grid-template-columns: repeat(2, 1fr);
@@ -344,19 +365,16 @@ body {
 @media (max-width: 768px) {
 
   .container {
-    padding: 20px 15px;
+    padding: 10px;
   }
 
   .hero {
-    padding: 35px 20px;
+    margin-top: -20px;
+    margin-bottom: 20px;
   }
 
-  .hero h1 {
-    font-size: 32px;
-  }
-
-  .hero p {
-    font-size: 16px;
+  .produtos-grid {
+    margin-top: 0;
   }
 
   .admin-produto-card,
@@ -368,17 +386,13 @@ body {
 
 @media (max-width: 576px) {
 
+  .hero-banner {
+    width: 100%;
+  }
+
   .produtos-grid,
   .admin-produtos {
     grid-template-columns: 1fr;
-  }
-
-  .hero h1 {
-    font-size: 28px;
-  }
-
-  .hero img {
-    width: 140px;
   }
 
   .admin-botoes {

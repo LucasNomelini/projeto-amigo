@@ -7,6 +7,8 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Admin from './pages/Admin'
 
+import ProtectedRoute from './components/ProtectedRoute'
+
 function App() {
 
   return (
@@ -25,12 +27,17 @@ function App() {
 
       <Route
         path="/admin"
-        element={<Admin />}
+        element={
+          <ProtectedRoute>
+            <Admin />
+          </ProtectedRoute>
+        }
       />
 
     </Routes>
 
   )
+
 }
 
 export default App

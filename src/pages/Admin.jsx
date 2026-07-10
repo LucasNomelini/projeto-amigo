@@ -1,18 +1,22 @@
 import { useEffect, useState } from 'react'
-
+import { signOut } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
+import { auth } from '../services/firebase'
 import {
   collection,
   addDoc,
   getDocs,
   deleteDoc,
   doc,
-  updateDoc
+  updateDoc,
+  query,
+  orderBy
 } from 'firebase/firestore'
-
 import { db } from '../services/firebase'
 
 function Admin() {
-
+  
+  const navigate = useNavigate()
   const [nome, setNome] = useState('')
   const [categoria, setCategoria] = useState('')
   const [descricao, setDescricao] = useState('')
@@ -21,28 +25,41 @@ function Admin() {
 
   const [produtos, setProdutos] = useState([])
   const [editandoId, setEditandoId] = useState(null)
+  
+async function sair() {
 
-  async function carregarProdutos() {
+    try {
 
-    const snapshot = await getDocs(
-      collection(
-        db,
-        'produtos'
-      )
-    )
+      await signOut(auth)
 
-    const lista = snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    }))
+      navigate('/login')
 
-    setProdutos(lista)
+    } catch (error) {
+
+      console.log(error)
+
+      alert('Erro ao sair.')
+
+    }
+
   }
 
+async function carregarProdutos() {
+
+  const snapshot = await getDocs(
+    collection(db, 'produtos')
+  )
+
+  const lista = snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+  }))
+
+  setProdutos(lista)
+}
+
   useEffect(() => {
-
     carregarProdutos()
-
   }, [])
 
   function editarProduto(produto) {
@@ -54,6 +71,11 @@ function Admin() {
     setImagemUrl(produto.imagemUrl)
 
     setEditandoId(produto.id)
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
   }
 
   async function adicionarProduto() {
@@ -67,20 +89,14 @@ function Admin() {
         !preco ||
         !imagemUrl
       ) {
-
         alert('Preencha todos os campos.')
-
         return
       }
 
       if (editandoId) {
 
         await updateDoc(
-          doc(
-            db,
-            'produtos',
-            editandoId
-          ),
+          doc(db, 'produtos', editandoId),
           {
             nome,
             categoria,
@@ -97,22 +113,19 @@ function Admin() {
       } else {
 
         await addDoc(
-          collection(
-            db,
-            'produtos'
-          ),
+          collection(db, 'produtos'),
           {
             nome,
             categoria,
             descricao,
             preco: Number(preco),
             imagemUrl,
-            destaque: false
+            destaque: false,
+            criadoEm: Date.now()
           }
         )
 
         alert('Produto salvo com sucesso!')
-
       }
 
       setNome('')
@@ -128,28 +141,21 @@ function Admin() {
       console.log(error)
 
       alert(error.message)
-
     }
-
   }
 
   async function excluirProduto(id) {
 
-    const confirmar =
-      window.confirm(
-        'Deseja excluir este produto?'
-      )
+    const confirmar = window.confirm(
+      'Deseja excluir este produto?'
+    )
 
     if (!confirmar) return
 
     try {
 
       await deleteDoc(
-        doc(
-          db,
-          'produtos',
-          id
-        )
+        doc(db, 'produtos', id)
       )
 
       await carregarProdutos()
@@ -159,9 +165,7 @@ function Admin() {
       console.log(error)
 
       alert(error.message)
-
     }
-
   }
 
   return (
@@ -170,9 +174,20 @@ function Admin() {
 
       <div className="admin-card">
 
+        <div className="admin-header">
+
         <h1 className="admin-title">
           Painel Administrativo
         </h1>
+
+        <button
+          className="btn-sair"
+          onClick={sair}
+        >
+          🚪 Sair
+        </button>
+
+      </div>
 
         <div className="admin-form">
 
@@ -253,9 +268,7 @@ function Admin() {
 
             <div className="admin-produto-info">
 
-              <h3>
-                {produto.nome}
-              </h3>
+              <h3>{produto.nome}</h3>
 
               <p>
                 📂 {produto.categoria}
@@ -266,29 +279,37 @@ function Admin() {
               </p>
 
               <p className="preco">
-                💰 R$ {Number(produto.preco).toFixed(2)}
+                {Number(produto.preco).toLocaleString(
+                  'pt-BR',
+                  {
+                    style: 'currency',
+                    currency: 'BRL'
+                  }
+                )}
               </p>
-                
-        <div className="admin-botoes">
 
-              <button
-                className="btn-editar"
-                onClick={() =>
-                  editarProduto(produto)
-                }
-              >
-                ✏️ Editar
-              </button>
+              <div className="admin-botoes">
 
-              <button
-                className="btn-excluir"
-                onClick={() =>
-                  excluirProduto(produto.id)
-                }
-              >
-                🗑 Excluir
-              </button>
-                </div>
+                <button
+                  className="btn-editar"
+                  onClick={() =>
+                    editarProduto(produto)
+                  }
+                >
+                  ✏️ Editar
+                </button>
+
+                <button
+                  className="btn-excluir"
+                  onClick={() =>
+                    excluirProduto(produto.id)
+                  }
+                >
+                  🗑 Excluir
+                </button>
+
+              </div>
+
             </div>
 
           </div>
